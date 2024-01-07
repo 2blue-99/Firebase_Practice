@@ -11,13 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.firebasepractice.FireBaseHelper
+import com.example.firebasepractice.state.ScreenState
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    db : FireBaseHelper,
+    navigate: () -> Unit
+) {
     val fireBaseHelper = FireBaseHelper()
-    fireBaseHelper.maker()
 
     Surface(
     modifier = Modifier.fillMaxSize()
@@ -39,6 +43,21 @@ fun MainScreen() {
             ) {
                 Text(text = "Get")
             }
+
+            Button(
+                modifier = Modifier.size(100.dp,50.dp),
+                onClick = {
+                    db.logout()
+                    if(!db.isLogin())
+                        navigate()
+                }
+            ) {
+                Text(text = "Logout")
+            }
         }
     }
+}
+
+fun NavController.navigateMainScreen(){
+    this.navigate(ScreenState.Main.name)
 }

@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,7 +12,6 @@ plugins {
 android {
     namespace = "com.example.firebasepractice"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.example.firebasepractice"
         minSdk = 24
@@ -20,6 +23,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "MyKey",getApikey("MyKey"))
     }
 
     buildTypes {
@@ -49,9 +53,21 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildFeatures{
+        buildConfig = true
+    }
+}
+
+fun getApikey(propertyKey: String): String{
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
 dependencies {
+
+
+    implementation ("androidx.navigation:navigation-compose:$2.7.6")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
+
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -79,6 +95,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
     
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+
 
 
     // Add the dependencies for any other desired Firebase products
